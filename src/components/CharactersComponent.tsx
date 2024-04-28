@@ -75,7 +75,7 @@ const CharacterComponent: React.FC<Props> = ({ title, characterNumber }: Props) 
     return (
         <>
             <div>
-                <TitleComponent title={title} character={character} handleDismiss={handleDismiss} />
+                <TitleComponent title={character ? character.name : title} character={character} handleDismiss={handleDismiss} />
                 <div className="gap-4 grid grid-cols-1  md:grid-cols-2">
                     {characters.length > 0 &&
                         characters.map((item: CharacterType) => {
