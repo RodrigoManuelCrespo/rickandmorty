@@ -69,35 +69,23 @@ const CharacterComponent: React.FC<Props> = ({ title }: Props) => {
                                         <Chip
                                             color="primary"
                                             size="sm"
-                                            className="z-10	absolute top-2 left-2"
+                                            className="z-10	absolute top-2 right-2"
                                         >
                                             + Info
                                         </Chip>
                                     </CardBody>
                                     <CardFooter className="text-small flex-col items-start">
-                                        <div className="flex justify-between items-center w-full">
-                                            <p className="text-left font-semibold truncate">{item.name}</p>
-                                            <Button
-                                                color="primary"
-                                                size="sm"
-                                                variant="bordered"
-                                                radius="full"
-                                                className="max-md:hidden"
-                                            >
-                                                Select
-                                            </Button>
-                                        </div>
-                                        {item.status && <p className="text-default-500 truncate">Status: {item.status}</p>}
+                                        <p className="text-left text-lg font-semibold mb-1 truncate">{item.name}</p>
+                                        {item.status && <p className="text-default-500 mb-1 truncate">Status: {item.status}</p>}
                                         {item.species && <p className="text-default-500 truncate">Specie: {item.species}</p>}
                                         <Button
                                             color="primary"
                                             size="sm"
-                                            variant="bordered"
-                                            radius="full"
-                                            className="md:hidden mt-4"
+                                            variant="flat"
+                                            className="mt-4"
                                             fullWidth
                                         >
-                                            Seleccionar
+                                            Select
                                         </Button>
                                     </CardFooter>
                                 </Card>
