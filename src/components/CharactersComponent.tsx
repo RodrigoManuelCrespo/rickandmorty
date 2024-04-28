@@ -84,11 +84,11 @@ const CharacterComponent: React.FC<Props> = ({ title }: Props) => {
                                                 radius="full"
                                                 className="max-md:hidden"
                                             >
-                                                Seleccionar
+                                                Select
                                             </Button>
                                         </div>
-                                        {item.status && <p className="text-default-500">Status: {item.status}</p>}
-                                        {item.species && <p className="text-default-500">Specie: {item.species}</p>}
+                                        {item.status && <p className="text-default-500 truncate">Status: {item.status}</p>}
+                                        {item.species && <p className="text-default-500 truncate">Specie: {item.species}</p>}
                                         <Button
                                             color="primary"
                                             size="sm"
