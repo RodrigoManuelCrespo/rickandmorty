@@ -2,8 +2,8 @@ import { Avatar, Chip, Divider } from "@nextui-org/react"
 
 interface Props {
     title: string
-    character: CharacterType | null
-    handleDismiss: () => void
+    character?: CharacterType | null
+    handleDismiss?: () => void
 }
 
 const TitleComponent: React.FC<Props> = ({ title, character, handleDismiss }: Props) => {

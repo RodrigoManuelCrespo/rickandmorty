@@ -1,34 +1,13 @@
 'use client'
 
 import CharacterComponent from "@/components/CharactersComponent";
-import ApiService from "@/service/ApiService";
-import { useEffect, useState } from "react";
 import { Image } from "@nextui-org/react"
 import EpisodesComponent from "@/components/EpisodesComponent";
-
-const episodesData = [
-  "https://rickandmortyapi.com/api/episode/1",
-  "https://rickandmortyapi.com/api/episode/2",
-  "https://rickandmortyapi.com/api/episode/3",
-  "https://rickandmortyapi.com/api/episode/4",
-  "https://rickandmortyapi.com/api/episode/5",
-  "https://rickandmortyapi.com/api/episode/6",
-  "https://rickandmortyapi.com/api/episode/7",
-  "https://rickandmortyapi.com/api/episode/8",
-]
+import { useAppSelector } from "@/redux/hook";
 
 export default function Home() {
-  const [characters, setCharacters] = useState<Array<CharacterType>>([])
-
-  useEffect(() => {
-    const fetch = async () => {
-      const character: any = await ApiService.getInstance().getCharacters()
-      setCharacters(character.results)
-    }
-
-    fetch()
-  }, [])
-
+  const firstcharacter: CharacterType | null = useAppSelector((state: any) => state.character.firstCharacter);
+  const secondCharacter: CharacterType | null = useAppSelector((state: any) => state.character.secondCharacter);
 
   return (
     <main className="bg-gradient-to-b from-black to-gray-800">
@@ -49,11 +28,14 @@ export default function Home() {
           <CharacterComponent title="Character #2" characterNumber={'secondCharacter'} />
         </div>
         <div className="gap-4 grid grid-cols-1 md:grid-cols-3 md:gap-10">
-          <EpisodesComponent episodes={episodesData} title="Episodes Character #1" />
-          <EpisodesComponent episodes={episodesData} title="Share Episodes #1 & #2" />
-          <EpisodesComponent episodes={episodesData} title="Episodes Character #2" />
+          {firstcharacter && <EpisodesComponent episodes={firstcharacter?.episode} title="Episodes Character #1" />}
+          {firstcharacter && secondCharacter && <EpisodesComponent episodes={[...firstcharacter.episode, ...secondCharacter.episode]} title="Share Episodes #1 & #2" share={true} />}
+          {secondCharacter && <EpisodesComponent episodes={secondCharacter?.episode} title="Episodes Character #2" />}
+        </div>
+        <div>
+          <p className="text-gray-500 text-center py-14">© 2024 · Rodrigo Crespo</p>
         </div>
       </div>
-    </main>
+    </main >
   );
 }

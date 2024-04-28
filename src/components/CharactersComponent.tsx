@@ -49,10 +49,6 @@ const CharacterComponent: React.FC<Props> = ({ title, characterNumber }: Props) 
     };
 
     const handleSelect = (character: CharacterType) => {
-        console.log(character);
-        console.log("Ingreso");
-
-
         if (characterNumber == 'firstCharacter') {
             dispatch(setFirstCharacter(character));
             return

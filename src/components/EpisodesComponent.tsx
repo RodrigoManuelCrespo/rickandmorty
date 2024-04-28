@@ -1,36 +1,46 @@
-import { Card, Divider, CardBody } from "@nextui-org/react"
+import { Card, CardBody } from "@nextui-org/react"
 import { useEffect, useState } from "react"
 import TitleComponent from "./TitleComponent"
 
 interface Props {
     episodes: Array<string>
     title: string
+    share?: boolean
 }
 
-const EpisodesComponent: React.FC<Props> = ({ episodes, title }: Props) => {
+const EpisodesComponent: React.FC<Props> = ({ episodes, title, share }: Props) => {
     const [episodesData, setEpisodesData] = useState<Array<EpisodeType>>([]);
 
     useEffect(() => {
         const fetchCharacterEpisodes = async () => {
             try {
-                const episodesData = await Promise.all(
-                    episodes.map(async (url: any) => {
+                let episodesFilter: Array<string>
+
+                if (share) {
+                    episodesFilter = episodes.filter((elemento, indice) => episodes.indexOf(elemento) !== indice);
+                } else {
+                    episodesFilter = [...episodes]
+                }
+
+                const episodesArray: Array<EpisodeType> = await Promise.all(
+                    episodesFilter.map(async (url: any) => {
                         const episodeResponse = await fetch(url);
                         const episodeData = await episodeResponse.json();
                         return episodeData;
                     })
                 );
-                setEpisodesData(episodesData);
+
+                setEpisodesData(episodesArray);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
         };
 
         fetchCharacterEpisodes();
-    }, [episodes]);
+    }, [episodes, share]);
 
     return (
-        <div className="mb-6">
+        episodesData.length > 0 && <div className="mb-6">
             <TitleComponent title={title} />
             <Card>
                 <CardBody>
