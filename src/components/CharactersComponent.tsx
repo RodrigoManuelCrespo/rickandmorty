@@ -1,4 +1,4 @@
-import { Button, Card, CardBody, CardFooter, Chip, Image, useDisclosure } from "@nextui-org/react";
+import { Button, Card, CardBody, CardFooter, Chip, Divider, Image, useDisclosure } from "@nextui-org/react";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter } from "@nextui-org/react";
 import PaginatorComponent from "./PaginatorComponent";
 import { useState } from "react";
@@ -67,7 +67,7 @@ const CharacterComponent: React.FC<Props> = ({ characters }: Props) => {
                 </div>
                 <PaginatorComponent />
             </div>
-            <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement={"center"}>
+            <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="sm">
                 <ModalContent>
                     {(onClose) => (
                         <>
@@ -78,11 +78,12 @@ const CharacterComponent: React.FC<Props> = ({ characters }: Props) => {
                                     shadow="sm"
                                     radius="lg"
                                     width="100%"
-                                    alt={'logo.png'}
+                                    alt={selectedCharacter?.name}
                                     className="w-full object-cover"
                                     src={selectedCharacter?.image}
                                 />
-                                <p className="font-semibold text-xl">{selectedCharacter?.name}</p>
+                                <h3 className="font-semibold pt-2 text-2xl">{selectedCharacter?.name}</h3>
+                                <Divider></Divider>
                                 <p className="text-gray-500">
                                     Status: <span className="text-white">{selectedCharacter?.status}</span>
                                 </p>
@@ -92,14 +93,15 @@ const CharacterComponent: React.FC<Props> = ({ characters }: Props) => {
                                 <p className="text-gray-500">
                                     Gender: <span className="text-white">{selectedCharacter?.gender}</span>
                                 </p>
-                                <p className="text-gray-500">Origin: <span className="text-white">{selectedCharacter?.origin.name}</span>
-                                </p>
                                 <p className="text-gray-500">
                                     Location: <span className="text-white">{selectedCharacter?.location.name}</span>
                                 </p>
+                                <p className="text-gray-500">
+                                    Origin: <span className="text-white">{selectedCharacter?.origin.name}</span>
+                                </p>
                             </ModalBody>
                             <ModalFooter>
-                                <Button color="danger" variant="light" onPress={onClose}>
+                                <Button color="secondary" variant="light" onPress={onClose}>
                                     Close
                                 </Button>
                                 <Button color="primary" onPress={onClose}>
