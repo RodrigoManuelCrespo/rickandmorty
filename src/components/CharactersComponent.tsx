@@ -5,6 +5,7 @@ import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter } from "@nextu
 import PaginatorComponent from "./PaginatorComponent";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import TitleComponent from "./TitleComponent";
 
 interface Props {
     title: string;
@@ -45,10 +46,7 @@ const CharacterComponent: React.FC<Props> = ({ title }: Props) => {
     return (
         <>
             <div>
-                <div className="mb-6">
-                    <h3 className="text-xl font-semibold mb-4">{title}</h3>
-                    <Divider></Divider>
-                </div>
+                <TitleComponent title={title} />
                 <div className="gap-4 grid grid-cols-1  md:grid-cols-2">
                     {characters.length > 0 &&
                         characters.map((item: CharacterType) => {

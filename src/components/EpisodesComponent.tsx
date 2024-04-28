@@ -1,5 +1,6 @@
 import { Card, Divider, CardBody } from "@nextui-org/react"
 import { useEffect, useState } from "react"
+import TitleComponent from "./TitleComponent"
 
 interface Props {
     episodes: Array<string>
@@ -30,10 +31,7 @@ const EpisodesComponent: React.FC<Props> = ({ episodes, title }: Props) => {
 
     return (
         <div className="mb-6">
-            <div className="mb-6">
-                <h3 className="text-xl font-semibold mb-4">{title}</h3>
-                <Divider></Divider>
-            </div>
+            <TitleComponent title={title} />
             <Card>
                 <CardBody>
                     <ul>
