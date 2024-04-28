@@ -31,7 +31,7 @@ export default function Home() {
 
 
   return (
-    <main className="bg-gradient-to-b from-black to-primary">
+    <main className="bg-gradient-to-b from-black to-gray-800">
       <div className="max-w-[1200px] m-auto px-4">
         <div className="flex item-center justify-center py-10">
           <Image
