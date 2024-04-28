@@ -102,12 +102,14 @@ const PaginatorComponent: React.FC<PaginatorProps> = ({
             showControls
             total={totalPages}
             initialPage={currentPage}
-            className="gap-2 py-12 flex justify-center items-center"
+            className="gap-2 py-12 flex items-center justify-start md:justify-center"
             radius="full"
             renderItem={renderItem}
             variant="light"
             onChange={(page: number) => onPageChange(page)}
         />
+        // <Pagination total={40} initialPage={1} />
+
     );
 };
 
