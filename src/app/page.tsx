@@ -45,8 +45,8 @@ export default function Home() {
           />
         </div>
         <div className="gap-10 grid grid-cols-2">
-          <CharacterComponent characters={characters} title="Character #1" />
-          <CharacterComponent characters={characters} title="Character #2" />
+          <CharacterComponent title="Character #1" />
+          <CharacterComponent title="Character #2" />
         </div>
         <div className="gap-4 grid grid-cols-1 md:grid-cols-3 md:gap-10">
           <EpisodesComponent episodes={episodesData} title="Episodes Character #1" />
