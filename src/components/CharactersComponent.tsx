@@ -1,11 +1,13 @@
 'use client'
 
-import { Button, Card, CardBody, CardFooter, Chip, Divider, Image, useDisclosure } from "@nextui-org/react";
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter } from "@nextui-org/react";
+import { Avatar, Button, Card, CardBody, CardFooter, Chip, Divider, Image, useDisclosure } from "@nextui-org/react";
+import { Modal, ModalContent, ModalBody, ModalFooter } from "@nextui-org/react";
 import PaginatorComponent from "./PaginatorComponent";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import TitleComponent from "./TitleComponent";
+import { removeFirstCharacter, setFirstCharacter } from "@/redux/slice";
+import { useAppDispatch, useAppSelector } from "@/redux/hook";
 
 interface Props {
     title: string;
@@ -16,6 +18,8 @@ const CharacterComponent: React.FC<Props> = ({ title }: Props) => {
     const [selectedCharacter, setSelectedCharacter] = useState<CharacterType | null>(null);
     const [characters, setCharacters] = useState<CharacterType[]>([]);
     const [paginationInfo, setPaginationInfo] = useState<any>(null);
+    const dispatch = useAppDispatch();
+    const character: CharacterType | null = useAppSelector(state => state.character.firstCharacter);
 
     useEffect(() => {
         fetchData();
@@ -38,15 +42,39 @@ const CharacterComponent: React.FC<Props> = ({ title }: Props) => {
         fetchData(String(page));
     };
 
-    const handleClick = (item: any) => {
+    const handleModal = (character: CharacterType) => {
         onOpen();
-        setSelectedCharacter(item);
+        setSelectedCharacter(character);
     };
+
+    const handleSelect = (character: CharacterType) => {
+        dispatch(setFirstCharacter(character));
+    }
+
+    const handleDismiss = () => {
+        dispatch(removeFirstCharacter())
+    }
 
     return (
         <>
             <div>
                 <TitleComponent title={title} />
+                <div className="mb-4">
+                    {character &&
+                        <Chip
+                            color="primary"
+                            onClose={handleDismiss}
+                            avatar={
+                                <Avatar
+                                    name={character.name}
+                                    src={character.image}
+                                />
+                            }
+                        >
+                            {character.name}
+                        </Chip>
+                    }
+                </div>
                 <div className="gap-4 grid grid-cols-1  md:grid-cols-2">
                     {characters.length > 0 &&
                         characters.map((item: CharacterType) => {
@@ -54,7 +82,7 @@ const CharacterComponent: React.FC<Props> = ({ title }: Props) => {
                                 <Card shadow="sm" key={item.id} isPressable>
                                     <CardBody
                                         className="overflow-visible p-0"
-                                        onClick={() => handleClick(item)}
+                                        onClick={() => handleModal(item)}
                                     >
                                         <Image
                                             shadow="sm"
@@ -76,15 +104,27 @@ const CharacterComponent: React.FC<Props> = ({ title }: Props) => {
                                         <p className="text-left text-lg font-semibold mb-1 truncate">{item.name}</p>
                                         {item.status && <p className="text-default-500 mb-1 truncate">Status: {item.status}</p>}
                                         {item.species && <p className="text-default-500 truncate">Specie: {item.species}</p>}
-                                        <Button
-                                            color="primary"
+                                        {item.id == character?.id ? <Button
+                                            color="secondary"
                                             size="sm"
                                             variant="flat"
                                             className="mt-4"
                                             fullWidth
+                                            onClick={handleDismiss}
                                         >
-                                            Select
-                                        </Button>
+                                            Dismiss
+                                        </Button> :
+                                            <Button
+                                                color="primary"
+                                                size="sm"
+                                                variant="flat"
+                                                className="mt-4"
+                                                fullWidth
+                                                onClick={() => handleSelect(item)}
+                                            >
+                                                Select
+                                            </Button>
+                                        }
                                     </CardFooter>
                                 </Card>
                             );
