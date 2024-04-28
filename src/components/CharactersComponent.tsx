@@ -4,26 +4,28 @@ import PaginatorComponent from "./PaginatorComponent";
 import { useState } from "react";
 
 interface Props {
-    characters: Array<any>
+    characters: Array<CharacterType>;
+    title: string;
 }
 
-const CharacterComponent: React.FC<Props> = ({ characters }: Props) => {
+const CharacterComponent: React.FC<Props> = ({ characters, title }: Props) => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure()
     const [selectedCharacter, setSelectedCharacter] = useState<CharacterType | null>(null)
 
     const handleClick = (item: any) => {
         onOpen()
-        console.log(item);
-
         setSelectedCharacter(item)
     }
 
     return (
         <>
             <div>
-                <h3 className="text-xl mb-4">Character 1</h3>
-                <div className="gap-4 grid grid-cols-2">
-                    {characters.length > 0 && characters.map((item: any) => {
+                <div className="mb-6">
+                    <h3 className="text-xl font-semibold mb-4">{title}</h3>
+                    <Divider></Divider>
+                </div>
+                <div className="gap-4 grid grid-cols-1  md:grid-cols-2">
+                    {characters.length > 0 && characters.map((item: CharacterType) => {
                         return (
                             <Card shadow="sm" key={item.name} isPressable>
                                 <CardBody
@@ -33,9 +35,8 @@ const CharacterComponent: React.FC<Props> = ({ characters }: Props) => {
                                     <Image
                                         shadow="sm"
                                         radius="lg"
-                                        width="100%"
-                                        alt={'logo.png'}
-                                        className="w-full object-cover"
+                                        alt={item.name}
+                                        className="w-full"
                                         src={item.image}
                                     />
                                     <Chip
@@ -54,12 +55,23 @@ const CharacterComponent: React.FC<Props> = ({ characters }: Props) => {
                                             size="sm"
                                             variant="bordered"
                                             radius="full"
+                                            className="max-md:hidden"
                                         >
                                             Seleccionar
                                         </Button>
                                     </div>
                                     {item.status && <p className="text-default-500">Status: {item.status}</p>}
                                     {item.species && <p className="text-default-500">Specie: {item.species}</p>}
+                                    <Button
+                                        color="primary"
+                                        size="sm"
+                                        variant="bordered"
+                                        radius="full"
+                                        className="md:hidden mt-4"
+                                        fullWidth
+                                    >
+                                        Seleccionar
+                                    </Button>
                                 </CardFooter>
                             </Card>
                         )
@@ -67,12 +79,10 @@ const CharacterComponent: React.FC<Props> = ({ characters }: Props) => {
                 </div>
                 <PaginatorComponent />
             </div>
-            <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="sm">
+            <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="sm" hideCloseButton={true}>
                 <ModalContent>
                     {(onClose) => (
                         <>
-                            <ModalHeader className="flex flex-col gap-1">
-                            </ModalHeader>
                             <ModalBody>
                                 <Image
                                     shadow="sm"

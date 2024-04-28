@@ -15,26 +15,23 @@ export class ApiService {
             const url = new URL('https://rickandmortyapi.com/api/character')
             page && url.searchParams.append('page', page);
             const characters: any = await axios(url.toString())
-            console.log(characters);
-
             return characters.data
         } catch (error) {
             throw error;
         }
     }
 
-    public async getEpisodes(): Promise<void> {
+    public async getEpisodes(number?: string): Promise<void> {
         try {
-            // const data: LoginResponse = await this.apiService.post('/auth/login', { username, password }, { requireAuth: false });
-            // if (data.token) {
-            //     localStorage.setItem('token', data.token);
-            // }
-            // window.location.href = '/home';
+            const url = new URL('https://rickandmortyapi.com/api/episode')
+            number && url.searchParams.append('page', number);
+            const episode: any = await axios(url.toString())
+            console.log(episode);
+            return episode.data
         } catch (error) {
-            throw error; // Propagar el error para manejarlo en el componente
+            throw error;
         }
     }
-
 }
 
 export default ApiService;
