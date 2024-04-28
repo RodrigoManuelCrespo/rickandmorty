@@ -6,20 +6,21 @@ import PaginatorComponent from "./PaginatorComponent";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import TitleComponent from "./TitleComponent";
-import { removeFirstCharacter, setFirstCharacter } from "@/redux/slice";
+import { removeFirstCharacter, removeSecondCharacter, setFirstCharacter, setSecondCharacter } from "@/redux/slice";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 
 interface Props {
     title: string;
+    characterNumber: 'firstCharacter' | 'secondCharacter';
 }
 
-const CharacterComponent: React.FC<Props> = ({ title }: Props) => {
+const CharacterComponent: React.FC<Props> = ({ title, characterNumber }: Props) => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const [selectedCharacter, setSelectedCharacter] = useState<CharacterType | null>(null);
     const [characters, setCharacters] = useState<CharacterType[]>([]);
     const [paginationInfo, setPaginationInfo] = useState<any>(null);
     const dispatch = useAppDispatch();
-    const character: CharacterType | null = useAppSelector(state => state.character.firstCharacter);
+    const character: CharacterType | null = useAppSelector(state => state.character[characterNumber]);
 
     useEffect(() => {
         fetchData();
@@ -48,33 +49,37 @@ const CharacterComponent: React.FC<Props> = ({ title }: Props) => {
     };
 
     const handleSelect = (character: CharacterType) => {
-        dispatch(setFirstCharacter(character));
+        console.log(character);
+        console.log("Ingreso");
+
+
+        if (characterNumber == 'firstCharacter') {
+            dispatch(setFirstCharacter(character));
+            return
+        }
+
+        if (characterNumber == 'secondCharacter') {
+            dispatch(setSecondCharacter(character));
+            return
+        }
     }
 
     const handleDismiss = () => {
-        dispatch(removeFirstCharacter())
+        if (characterNumber == 'firstCharacter') {
+            dispatch(removeFirstCharacter())
+            return
+        }
+
+        if (characterNumber == 'secondCharacter') {
+            dispatch(removeSecondCharacter());
+            return
+        }
     }
 
     return (
         <>
             <div>
-                <TitleComponent title={title} />
-                <div className="mb-4">
-                    {character &&
-                        <Chip
-                            color="primary"
-                            onClose={handleDismiss}
-                            avatar={
-                                <Avatar
-                                    name={character.name}
-                                    src={character.image}
-                                />
-                            }
-                        >
-                            {character.name}
-                        </Chip>
-                    }
-                </div>
+                <TitleComponent title={title} character={character} handleDismiss={handleDismiss} />
                 <div className="gap-4 grid grid-cols-1  md:grid-cols-2">
                     {characters.length > 0 &&
                         characters.map((item: CharacterType) => {
@@ -170,12 +175,12 @@ const CharacterComponent: React.FC<Props> = ({ title }: Props) => {
                                 </p>
                             </ModalBody>
                             <ModalFooter>
-                                <Button color="secondary" variant="light" onPress={onClose}>
+                                <Button color="secondary" variant="light" onPress={onClose}  >
                                     Close
                                 </Button>
-                                <Button color="primary" onPress={onClose}>
+                                {selectedCharacter && <Button color="primary" onPress={() => handleSelect(selectedCharacter)}>
                                     Select
-                                </Button>
+                                </Button>}
                             </ModalFooter>
                         </>
                     )}
