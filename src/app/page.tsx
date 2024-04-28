@@ -16,7 +16,7 @@ export default function Home() {
           <Image
             shadow="none"
             radius="none"
-            width={400}
+            width={500}
             height={200}
             alt="Logo"
             className="w-full object-cover"
@@ -26,7 +26,7 @@ export default function Home() {
         <div className="flex justify-center items-center mb-12">
           <p className="text-xl text-gray-400"><span className="text-white font-semibold">Welcome to the ultimate Rick and Morty app!</span> Dive into the multiverse and explore detailed character profiles. Select up to two characters to uncover the episodes they shared together. Get ready for an interdimensional journey unlike any other! Lets get schwifty!</p>
         </div>
-        <div className="gap-10 grid grid-cols-2">
+        <div className="gap-10 grid grid-cols-2 max-md:gap-4">
           <CharacterComponent title="Character #1" characterNumber={'firstCharacter'} />
           <CharacterComponent title="Character #2" characterNumber={'secondCharacter'} />
         </div>

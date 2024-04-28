@@ -8,6 +8,7 @@ import axios from "axios";
 import TitleComponent from "./TitleComponent";
 import { removeFirstCharacter, removeSecondCharacter, setFirstCharacter, setSecondCharacter } from "@/redux/slice";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
+import { toast } from 'sonner'
 
 interface Props {
     title: string;
@@ -15,7 +16,7 @@ interface Props {
 }
 
 const CharacterComponent: React.FC<Props> = ({ title, characterNumber }: Props) => {
-    const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
     const [selectedCharacter, setSelectedCharacter] = useState<CharacterType | null>(null);
     const [characters, setCharacters] = useState<CharacterType[]>([]);
     const [paginationInfo, setPaginationInfo] = useState<any>(null);
@@ -49,6 +50,11 @@ const CharacterComponent: React.FC<Props> = ({ title, characterNumber }: Props) 
     };
 
     const handleSelect = (character: CharacterType) => {
+        toast.success(`Character selected: ${character.name}`, {
+            duration: 2000,
+        })
+        isOpen && onClose()
+
         if (characterNumber == 'firstCharacter') {
             dispatch(setFirstCharacter(character));
             return
