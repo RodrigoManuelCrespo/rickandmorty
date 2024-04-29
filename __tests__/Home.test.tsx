@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import store from '@/redux/store';
 import Home from '@/app/page';
@@ -12,7 +12,6 @@ describe('Home component', () => {
             </Provider>
         );
 
-        // Verificar si los textos existen
         const welcomeText = screen.getByText(/Welcome to the ultimate Rick and Morty app!/i);
         const characterText1 = screen.getByText(/Character #1/i);
         const characterText2 = screen.getByText(/Character #2/i);

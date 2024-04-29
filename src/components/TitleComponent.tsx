@@ -10,7 +10,7 @@ const TitleComponent: React.FC<Props> = ({ title, character, handleDismiss }: Pr
     return (
         <div className="mb-6">
             <div className="flex justify-between flex-wrap mb-4 gap-2">
-                <h3 className="text-xl font-semibold">{title}</h3>
+                <h3 className="text-xl font-semibold" data-testid={`title-${title}`}>{title}</h3>
                 {character && <Chip
                     color="primary"
                     onClose={handleDismiss}

@@ -128,6 +128,7 @@ const CharacterComponent: React.FC<Props> = ({ title, characterNumber }: Props) 
                                                 className="mt-4"
                                                 fullWidth
                                                 onClick={() => handleSelect(item)}
+                                                data-testid={`${characterNumber}-${item.id}`}
                                             >
                                                 Select
                                             </Button>
