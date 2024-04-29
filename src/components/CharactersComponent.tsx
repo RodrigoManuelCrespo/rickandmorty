@@ -1,6 +1,6 @@
 'use client'
 
-import { Avatar, Button, Card, CardBody, CardFooter, Chip, Divider, Image, useDisclosure } from "@nextui-org/react";
+import { Avatar, Button, Card, CardBody, CardFooter, Chip, Divider, Image, Spinner, useDisclosure } from "@nextui-org/react";
 import { Modal, ModalContent, ModalBody, ModalFooter } from "@nextui-org/react";
 import PaginatorComponent from "./PaginatorComponent";
 import { useEffect, useState } from "react";
@@ -22,6 +22,7 @@ const CharacterComponent: React.FC<Props> = ({ title, characterNumber }: Props) 
     const [paginationInfo, setPaginationInfo] = useState<any>(null);
     const dispatch = useAppDispatch();
     const character: CharacterType | null = useAppSelector(state => state.character[characterNumber]);
+    const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
         fetchData();
@@ -34,9 +35,10 @@ const CharacterComponent: React.FC<Props> = ({ title, characterNumber }: Props) 
             const response = await axios(url.toString());
             setCharacters([...response.data.results]);
             setPaginationInfo(response.data.info);
-
+            setLoading(false);
         } catch (error) {
             console.error("Error fetching data:", error);
+            setLoading(false);
         }
     };
 
@@ -82,62 +84,68 @@ const CharacterComponent: React.FC<Props> = ({ title, characterNumber }: Props) 
         <>
             <div>
                 <TitleComponent title={character ? character.name : title} character={character} handleDismiss={handleDismiss} />
-                <div className="gap-4 grid grid-cols-1  md:grid-cols-2">
-                    {characters.length > 0 &&
-                        characters.map((item: CharacterType) => {
-                            return (
-                                <Card shadow="sm" key={item.id} isPressable>
-                                    <CardBody
-                                        className="overflow-visible p-0"
-                                        onClick={() => handleModal(item)}
-                                    >
-                                        <Image
-                                            shadow="sm"
-                                            radius="lg"
-                                            alt={item.name}
-                                            width={'100%'}
-                                            className="w-full h-[220px] object-cover"
-                                            src={item.image}
-                                        />
-                                        <Chip
-                                            color="primary"
-                                            size="sm"
-                                            className="z-10	absolute top-2 right-2"
+                {loading ?
+                    <div className="h-[100vh] flex justify-center items-center">
+                        <Spinner color="primary" />
+                    </div> :
+                    <div className="gap-4 grid grid-cols-1  md:grid-cols-2">
+                        {characters.length > 0 &&
+                            characters.map((item: CharacterType) => {
+                                return (
+                                    <Card shadow="sm" key={item.id} isPressable>
+                                        <CardBody
+                                            className="overflow-visible p-0"
+                                            onClick={() => handleModal(item)}
                                         >
-                                            + Info
-                                        </Chip>
-                                    </CardBody>
-                                    <CardFooter className="text-small flex-col items-start">
-                                        <p className="text-left text-lg font-semibold mb-1 truncate">{item.name}</p>
-                                        {item.status && <p className="text-default-500 mb-1 truncate">Status: {item.status}</p>}
-                                        {item.species && <p className="text-default-500 truncate">Specie: {item.species}</p>}
-                                        {item.id == character?.id ? <Button
-                                            color="secondary"
-                                            size="sm"
-                                            variant="flat"
-                                            className="mt-4"
-                                            fullWidth
-                                            onClick={handleDismiss}
-                                        >
-                                            Dismiss
-                                        </Button> :
-                                            <Button
+                                            <Image
+                                                shadow="sm"
+                                                radius="lg"
+                                                alt={item.name}
+                                                width={'100%'}
+                                                className="w-full h-[220px] object-cover"
+                                                src={item.image}
+                                            />
+                                            <Chip
                                                 color="primary"
+                                                size="sm"
+                                                className="z-10	absolute top-2 right-2"
+                                            >
+                                                + Info
+                                            </Chip>
+                                        </CardBody>
+                                        <CardFooter className="text-small flex-col items-start">
+                                            <p className="text-left text-lg font-semibold mb-1 truncate">{item.name}</p>
+                                            {item.status && <p className="text-default-500 mb-1 truncate">Status: {item.status}</p>}
+                                            {item.species && <p className="text-default-500 truncate">Specie: {item.species}</p>}
+                                            {item.id == character?.id ? <Button
+                                                color="secondary"
                                                 size="sm"
                                                 variant="flat"
                                                 className="mt-4"
                                                 fullWidth
-                                                onClick={() => handleSelect(item)}
-                                                data-testid={`${characterNumber}-${item.id}`}
+                                                onClick={handleDismiss}
                                             >
-                                                Select
-                                            </Button>
-                                        }
-                                    </CardFooter>
-                                </Card>
-                            );
-                        })}
-                </div>
+                                                Dismiss
+                                            </Button> :
+                                                <Button
+                                                    color="primary"
+                                                    size="sm"
+                                                    variant="flat"
+                                                    className="mt-4"
+                                                    fullWidth
+                                                    onClick={() => handleSelect(item)}
+                                                    data-testid={`${characterNumber}-${item.id}`}
+                                                >
+                                                    Select
+                                                </Button>
+                                            }
+                                        </CardFooter>
+                                    </Card>
+                                );
+                            })}
+                    </div>
+
+                }
                 {paginationInfo && (
                     <PaginatorComponent
                         currentPage={paginationInfo.currentPage}
